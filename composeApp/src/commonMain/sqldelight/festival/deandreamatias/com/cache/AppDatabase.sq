@@ -1,0 +1,20 @@
+CREATE TABLE Show (
+    id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    startDate TEXT,
+    startTime TEXT NOT NULL,
+    duration TEXT NOT NULL,
+    genre TEXT,
+    stage TEXT
+);
+
+insertShow:
+INSERT INTO Show(id, name, startDate, startTime, duration, genre, stage)
+VALUES(?, ?, ?, ?, ?, ?, ?);
+
+removeAllShows:
+DELETE FROM Show;
+
+selectAllShows:
+SELECT Show.*
+FROM Show;

@@ -135,3 +135,11 @@ compose.desktop {
         }
     }
 }
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName.set("festival.deandreamatias.com.cache")
+        }
+    }
+}
