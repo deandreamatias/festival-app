@@ -1,12 +1,13 @@
 package festival.deandreamatias.com.cache
-package festival.deandreamatias.com.entity.Show
+
+import festival.deandreamatias.com.entity.Show
 
 internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = AppDatabase(databaseDriverFactory.createDriver())
     private val dbQuery = database.appDatabaseQueries
 
     internal fun getAllShows(): List<Show> {
-        return dbQuery.selectAll(::mapShowSelecting).executeAsList()
+        return dbQuery.selectAllShows(::mapShowSelecting).executeAsList()
     }
 
     private fun mapShowSelecting(
@@ -16,7 +17,7 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         startTime: String,
         duration: String,
         genre: String,
-        stage: String,
+        stage: String
     ): Show {
         return Show(id, name, startDate, startTime, duration, genre, stage)
     }

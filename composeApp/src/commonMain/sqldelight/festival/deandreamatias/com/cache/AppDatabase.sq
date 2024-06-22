@@ -1,11 +1,11 @@
 CREATE TABLE Show (
     id TEXT NOT NULL,
     name TEXT NOT NULL,
-    startDate TEXT,
+    startDate TEXT NOT NULL,
     startTime TEXT NOT NULL,
     duration TEXT NOT NULL,
-    genre TEXT,
-    stage TEXT
+    genre TEXT NOT NULL,
+    stage TEXT NOT NULL
 );
 
 insertShow:
