@@ -59,6 +59,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
             implementation(libs.android.driver)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -73,16 +74,26 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.runtime)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.lifecycle.viewmodel.compose)
+            implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.darwin)
-            implementation(libs.native.driver)
+            implementation(libs.sqlite.driver)
+        }
+        wasmJsMain.dependencies {
+            implementation(libs.sqlite.driver)
+            implementation(libs.sqljs.driver)
+            implementation(npm("sql.js", "1.6.2"))
+            implementation(devNpm("copy-webpack-plugin", "9.1.0"))
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-            implementation(libs.native.driver)
+            implementation(libs.sqlite.driver)
         }
     }
 }
