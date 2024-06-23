@@ -1,6 +1,9 @@
 package festival.deandreamatias.com.entity
+
+import kotlinx.datetime.LocalTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.Duration
 
 @Serializable
 data class Show(
@@ -21,4 +24,14 @@ data class Show(
 ) {
     val startDateTime: String
         get() = "$startDate $startTime"
+
+    val durationTime: Duration
+        get() = duration.split(":").let { Duration.parse("${it[0]}h ${it[1]}m") }
+
+    val endTime: String
+        get() =
+            LocalTime.fromSecondOfDay(
+                LocalTime.parse(startTime).toSecondOfDay() + durationTime.inWholeSeconds.toInt()
+            ).toString()
+
 }

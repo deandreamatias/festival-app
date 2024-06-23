@@ -20,7 +20,7 @@
   {
     "id": "3",
     "name": "Gábor",
-    "start_date": "2019-09-01",
+    "start_date": "2019-09-02",
     "start_time": "12:00",
     "duration": "1:00",
     "stage": "Pumpai",
@@ -43,5 +43,104 @@
     "duration": "1:00",
     "stage": "Pumpai",
     "genre": "techno"
-  }
+  },
+  {
+    "id": "6",
+    "name": "Gábor",
+    "start_date": "2019-09-01",
+    "start_time": "15:00",
+    "duration": "1:00",
+    "stage": "Pumpai",
+    "genre": "techno"
+  },
+  {
+    "id": "7",
+    "name": "Gábor",
+    "start_date": "2019-09-01",
+    "start_time": "16:00",
+    "duration": "1:00",
+    "stage": "Pumpai",
+    "genre": "Electro House"
+  },
+  {
+    "id": "8",
+    "name": "Gábor",
+    "start_date": "2019-09-01",
+    "start_time": "17:00",
+    "duration": "1:30",
+    "stage": "Secondary stage",
+    "genre": "techno"
+  },
+  {
+    "id": "9",
+    "name": "Gábor",
+    "start_date": "2019-09-01",
+    "start_time": "18:00",
+    "duration": "2:00",
+    "stage": "Pumpai",
+    "genre": "techno"
+  },
+    {
+        "id": "10",
+        "name": "Gábor",
+        "start_date": "2019-09-01",
+        "start_time": "20:00",
+        "duration": "1:00",
+        "stage": "Pumpai",
+        "genre": "techno"
+    },
+    {
+        "id": "11",
+        "name": "Gábor",
+        "start_date": "2019-09-01",
+        "start_time": "21:00",
+        "duration": "1:00",
+        "stage": "Pumpai",
+        "genre": "techno"
+    },
+    {
+        "id": "12",
+        "name": "Gábor",
+        "start_date": "2019-09-01",
+        "start_time": "22:00",
+        "duration": "1:00",
+        "stage": "Pumpai",
+        "genre": "techno"
+    },
+    {
+        "id": "13",
+        "name": "Gábor",
+        "start_date": "2019-09-01",
+        "start_time": "23:00",
+        "duration": "1:00",
+        "stage": "Pumpai",
+        "genre": "techno"
+    },
+    {
+        "id": "14",
+        "name": "Gábor",
+        "start_date": "2019-09-02",
+        "start_time": "01:00",
+        "duration": "1:00",
+        "stage": "Secondary",
+        "genre": "techno"
+    },
+    {
+        "id": "15",
+        "name": "Gábor",
+        "start_date": "2019-09-02",
+        "start_time": "01:00",
+        "duration": "1:00",
+        "stage": "Pumpai",
+        "genre": "techno"
+    },
+    {
+        "id": "16",
+        "name": "Gábor",
+        "start_date": "2019-09-02",
+        "start_time": "02:00",
+        "duration": "1:00",
+        "stage": "Pumpai",
+        "genre": "techno"
+    }
 ]
