@@ -15,13 +15,16 @@ class MockSDK(databaseDriverFactory: DatabaseDriverFactory, val api: MockApi, va
         return if (cachedShows.isNotEmpty() && !forceReload) {
             cachedShows
         } else {
-            assetsDatabase.getAllShows().also {
-                database.clearAndCreateShows(it)
+            try {
+                api.getAllShows().also {
+                    database.clearAndCreateShows(it)
+                }
+            } catch (e: Exception) {
+                println("Error to load shows: $e")
+                assetsDatabase.getAllShows().also {
+                    database.clearAndCreateShows(it)
+                }
             }
-            // Temporary solution until the API is implemented
-//            api.getAllShows().also {
-//                database.clearAndCreateShows(it)
-//            }
         }
     }
 }
