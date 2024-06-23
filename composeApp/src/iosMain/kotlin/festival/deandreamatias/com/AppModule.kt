@@ -6,7 +6,8 @@ import org.koin.dsl.module
 actual val nativeModule = module {
     single<MockSDK> {
         MockSDK(
-            databaseDriverFactory = IOSDatabaseDriverFactory(), api = get()
+            databaseDriverFactory = IOSDatabaseDriverFactory(), api = get(),
+            assetsDatabase = get()
         )
     }
 }

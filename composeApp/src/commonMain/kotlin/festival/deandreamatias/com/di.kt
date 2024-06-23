@@ -1,5 +1,6 @@
 package festival.deandreamatias.com
 
+import festival.deandreamatias.com.cache.AssetsDatabase
 import festival.deandreamatias.com.network.MockApi
 import festival.deandreamatias.com.ui.ShowsViewModel
 import org.koin.compose.viewmodel.dsl.viewModelOf
@@ -15,6 +16,7 @@ val viewModelsModule = module {
 
 val appModule = module {
     single<MockApi> { MockApi() }
+    single<AssetsDatabase> { AssetsDatabase() }
 }
 
 expect val nativeModule: Module

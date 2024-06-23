@@ -9,7 +9,8 @@ actual val nativeModule = module {
         MockSDK(
             databaseDriverFactory = AndroidDatabaseDriverFactory(
                 androidContext()
-            ), api = get()
+            ), api = get(),
+            assetsDatabase = get()
         )
     }
 }

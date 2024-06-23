@@ -58,6 +58,7 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
+            implementation(libs.ktor.client.okhttp)
             implementation(libs.android.driver)
             implementation(libs.koin.android)
         }
@@ -82,18 +83,18 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(libs.ktor.client.darwin)
+            implementation(libs.ktor.client.android)
+            implementation(libs.ktor.client.okhttp)
             implementation(libs.sqlite.driver)
         }
         wasmJsMain.dependencies {
-            implementation(libs.sqlite.driver)
-            implementation(libs.sqljs.driver)
+            implementation(libs.web.worker.driver)
             implementation(npm("sql.js", "1.6.2"))
             implementation(devNpm("copy-webpack-plugin", "9.1.0"))
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-            implementation(libs.sqlite.driver)
+            implementation(libs.native.driver)
         }
     }
 }
@@ -153,4 +154,10 @@ sqldelight {
             packageName.set("festival.deandreamatias.com.cache")
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "festival.deandreamatias.com.resources"
+    generateResClass = always
 }
