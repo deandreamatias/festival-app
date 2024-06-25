@@ -1,5 +1,8 @@
 package festival.deandreamatias.com.entity
 
+import kotlinx.datetime.format.*
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -18,20 +21,35 @@ data class Show(
     @SerialName("duration")
     val duration: String,
     @SerialName("genre")
-    val genre: String,
+    val genre: String = "",
     @SerialName("stage")
     val stage: String,
 ) {
-    val startDateTime: String
-        get() = "$startDate $startTime"
+    val startDateTime: LocalDateTime
+        get() = LocalDateTime(localDate, localTime)
+
+    private val localTime: LocalTime
+        get() = LocalTime.parse(startTime)
+
+    private val localDate: LocalDate
+        get() {
+            val dateFormat = LocalDate.Format {
+                dayOfMonth()
+                char('/')
+                monthNumber()
+                char('/')
+                year()
+            }
+            return LocalDate.parse(startDate, dateFormat)
+        }
 
     val durationTime: Duration
         get() = duration.split(":").let { Duration.parse("${it[0]}h ${it[1]}m") }
 
     val endTime: String
-        get() =
-            LocalTime.fromSecondOfDay(
-                LocalTime.parse(startTime).toSecondOfDay() + durationTime.inWholeSeconds.toInt()
-            ).toString()
-
+        get() {
+            var seconds = localTime.toSecondOfDay() + durationTime.inWholeSeconds.toInt()
+            if (seconds >= 86400) seconds -= 86400
+            return LocalTime.fromSecondOfDay(seconds).toString()
+        }
 }
