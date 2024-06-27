@@ -7,7 +7,12 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val dbQuery = database.appDatabaseQueries
 
     internal fun getAllShows(): List<Show> {
-        return dbQuery.selectAllShows(::mapShowSelecting).executeAsList()
+        try {
+            return dbQuery.selectAllShows(::mapShowSelecting).executeAsList()
+        } catch (e: Exception) {
+            println("Error to load shows from database: $e")
+            return emptyList()
+        }
     }
 
     private fun mapShowSelecting(
@@ -23,6 +28,7 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     }
 
     internal fun clearAndCreateShows(shows: List<Show>) {
+        println("Saving shows to database")
         dbQuery.transaction {
             dbQuery.removeAllShows()
             shows.forEach { show ->

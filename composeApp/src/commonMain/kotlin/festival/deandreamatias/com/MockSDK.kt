@@ -13,6 +13,7 @@ class MockSDK(databaseDriverFactory: DatabaseDriverFactory, val api: MockApi, va
     suspend fun getShows(forceReload: Boolean): List<Show> {
         val cachedShows = database.getAllShows()
         return if (cachedShows.isNotEmpty() && !forceReload) {
+            println("Using cached shows with size: ${cachedShows.size}")
             cachedShows
         } else {
             try {
@@ -21,6 +22,7 @@ class MockSDK(databaseDriverFactory: DatabaseDriverFactory, val api: MockApi, va
                 }
             } catch (e: Exception) {
                 println("Error to load shows: $e")
+                println("Loading shows from assets")
                 assetsDatabase.getAllShows().also {
                     database.clearAndCreateShows(it)
                 }
