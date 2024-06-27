@@ -31,7 +31,7 @@ data class Show(
     private val localTime: LocalTime
         get() = LocalTime.parse(startTime)
 
-    private val localDate: LocalDate
+    val localDate: LocalDate
         get() {
             val dateFormat = LocalDate.Format {
                 dayOfMonth()

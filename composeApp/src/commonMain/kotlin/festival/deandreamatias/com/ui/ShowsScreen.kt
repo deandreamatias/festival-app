@@ -1,6 +1,8 @@
 package festival.deandreamatias.com.ui
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,7 +11,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,13 +20,20 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import festival.deandreamatias.com.entity.Show
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
@@ -49,19 +57,31 @@ fun ShowsScreen(
                 if (viewModel.state.value.shows.isEmpty()) {
                     Text("No shows found")
                 }
-                ShowList(shows = viewModel.state.value.shows, initialId = viewModel.state.value.initialId)
+                ShowList(
+                    shows = viewModel.state.value.shows,
+                    currentDateTime = viewModel.state.value.currentDateTime
+                )
             }
         }
     )
 }
 
 @Composable
-fun ShowList(shows: List<Show>, initialId: Int = 0) {
+fun ShowList(shows: List<Show>, currentDateTime: LocalDateTime?) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    var index = 0
 
-    coroutineScope.launch {
-        listState.animateScrollToItem(initialId)
+    val items = mutableListOf<Any>()
+    shows.groupBy { it.localDate }.forEach { (date, showsForDate) ->
+        items.add(date)
+        items.addAll(showsForDate)
+    }
+    if (currentDateTime != null) {
+        index = items.indexOfFirst { it is Show && it.startDateTime > currentDateTime }
+        coroutineScope.launch {
+            if (index != -1) listState.animateScrollToItem(index)
+        }
     }
 
     LazyColumn(
@@ -69,20 +89,41 @@ fun ShowList(shows: List<Show>, initialId: Int = 0) {
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(shows) { show ->
-            ShowItem(show = show)
+        items(items) { item ->
+            when (item) {
+                is LocalDate -> Text(item.getRelativeDay())
+                is Show -> ShowItem(
+                    show = item,
+                    isNextShow = item.id == items[index].let { it as? Show }?.id
+                )
+            }
         }
     }
 }
 
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ShowItem(show: Show) {
+fun ShowItem(show: Show, isNextShow: Boolean = false) {
+    val blinkState = remember { mutableStateOf(false) }
+    val color: Color by animateColorAsState(if (blinkState.value) Color.Gray else Color.White)
+
+    LaunchedEffect(key1 = isNextShow) {
+        if (isNextShow) {
+            blinkState.value = true
+            delay(500)
+            blinkState.value = false
+            delay(500)
+            blinkState.value = true
+            delay(500)
+            blinkState.value = false
+        }
+    }
     Box(
         modifier = Modifier.border(
             BorderStroke(1.dp, Color.DarkGray),
             shape = RoundedCornerShape(8.dp)
-        ).padding(8.dp).fillMaxWidth()
+        ).padding(8.dp).fillMaxWidth().background(color)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
