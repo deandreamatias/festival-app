@@ -1,6 +1,8 @@
 package festival.deandreamatias.com
 
+import festival.deandreamatias.com.alarm.AlarmServiceDesktop
 import festival.deandreamatias.com.cache.DesktopDatabaseDriverFactory
+import festival.deandreamatias.com.domain.AlarmService
 import org.koin.dsl.module
 
 actual val nativeModule = module {
@@ -10,4 +12,5 @@ actual val nativeModule = module {
             assetsDatabase = get()
         )
     }
+    single<AlarmService> { AlarmServiceDesktop() }
 }

@@ -19,6 +19,6 @@ class MockApi {
     }
 
     suspend fun getAllShows(): List<Show> {
-        return httpClient.get("https://festivalapp.free.beeceptor.com/").body()
+        return httpClient.get("https://festivalapp2.free.beeceptor.com/").body()
     }
 }

@@ -52,4 +52,6 @@ data class Show(
             if (seconds >= 86400) seconds -= 86400
             return LocalTime.fromSecondOfDay(seconds).toString()
         }
+
+    val timeAlarm: MyTime get() = MyTime(id.toInt(), localTime.hour, localTime.minute)
 }

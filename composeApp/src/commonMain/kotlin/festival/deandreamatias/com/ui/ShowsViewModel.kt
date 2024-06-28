@@ -5,10 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import festival.deandreamatias.com.MockSDK
+import festival.deandreamatias.com.domain.AlarmService
 import festival.deandreamatias.com.entity.Show
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
-class ShowsViewModel(private val sdk: MockSDK) : ViewModel() {
+class ShowsViewModel(private val sdk: MockSDK, private val alarmService: AlarmService) : ViewModel() {
     private val _state = mutableStateOf(ShowsScreenState())
     val state: State<ShowsScreenState> = _state
 
@@ -34,6 +35,12 @@ class ShowsViewModel(private val sdk: MockSDK) : ViewModel() {
                 )
                 println("Error: ${e.message}")
             }
+        }
+    }
+
+    fun addAlarm(show: Show) {
+        viewModelScope.launch {
+            alarmService.setAlarm(show.timeAlarm)
         }
     }
 }

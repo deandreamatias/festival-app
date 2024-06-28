@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,6 +17,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -59,7 +60,8 @@ fun ShowsScreen(
                 }
                 ShowList(
                     shows = viewModel.state.value.shows,
-                    currentDateTime = viewModel.state.value.currentDateTime
+                    currentDateTime = viewModel.state.value.currentDateTime,
+                    onSetAlarm = viewModel::addAlarm
                 )
             }
         }
@@ -67,7 +69,11 @@ fun ShowsScreen(
 }
 
 @Composable
-fun ShowList(shows: List<Show>, currentDateTime: LocalDateTime?) {
+fun ShowList(
+    shows: List<Show>,
+    currentDateTime: LocalDateTime?,
+    onSetAlarm: (Show) -> Unit = {},
+) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     var index = 0
@@ -94,7 +100,8 @@ fun ShowList(shows: List<Show>, currentDateTime: LocalDateTime?) {
                 is LocalDate -> Text(item.getRelativeDay())
                 is Show -> ShowItem(
                     show = item,
-                    isNextShow = item.id == items[index].let { it as? Show }?.id
+                    isNextShow = item.id == items[index].let { it as? Show }?.id,
+                    onSetAlarm
                 )
             }
         }
@@ -104,7 +111,7 @@ fun ShowList(shows: List<Show>, currentDateTime: LocalDateTime?) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ShowItem(show: Show, isNextShow: Boolean = false) {
+fun ShowItem(show: Show, isNextShow: Boolean = false, onSetAlarm: (Show) -> Unit = {}) {
     val blinkState = remember { mutableStateOf(false) }
     val color: Color by animateColorAsState(if (blinkState.value) Color.Gray else Color.White)
 
@@ -125,7 +132,7 @@ fun ShowItem(show: Show, isNextShow: Boolean = false) {
             shape = RoundedCornerShape(8.dp)
         ).padding(8.dp).fillMaxWidth().background(color)
     ) {
-        Row(
+        FlowRow(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Column {
@@ -144,6 +151,9 @@ fun ShowItem(show: Show, isNextShow: Boolean = false) {
                     Text(show.genre)
                     Text("${show.startTime} to ${show.endTime}")
                 }
+            }
+            Button(onClick = { onSetAlarm(show) }, modifier = Modifier.padding(8.dp)) {
+                Icon(imageVector = Icons.Default.Notifications, contentDescription = "Add alarm")
             }
         }
     }
