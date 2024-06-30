@@ -1,9 +1,9 @@
 package festival.deandreamatias.com.entity
 
-import kotlinx.datetime.format.*
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
+import kotlinx.datetime.format.char
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration
@@ -43,7 +43,7 @@ data class Show(
             return LocalDate.parse(startDate, dateFormat)
         }
 
-    val durationTime: Duration
+    private val durationTime: Duration
         get() = duration.split(":").let { Duration.parse("${it[0]}h ${it[1]}m") }
 
     val endTime: String

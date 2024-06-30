@@ -17,9 +17,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import festival.deandreamatias.com.entity.Show
+import festival.deandreamatias.com.ui.alarm.AlarmButton
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -61,7 +65,6 @@ fun ShowsScreen(
                 ShowList(
                     shows = viewModel.state.value.shows,
                     currentDateTime = viewModel.state.value.currentDateTime,
-                    onSetAlarm = viewModel::addAlarm
                 )
             }
         }
@@ -71,8 +74,7 @@ fun ShowsScreen(
 @Composable
 fun ShowList(
     shows: List<Show>,
-    currentDateTime: LocalDateTime?,
-    onSetAlarm: (Show) -> Unit = {},
+    currentDateTime: LocalDateTime?
 ) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -100,8 +102,7 @@ fun ShowList(
                 is LocalDate -> Text(item.getRelativeDay())
                 is Show -> ShowItem(
                     show = item,
-                    isNextShow = item.id == items[index].let { it as? Show }?.id,
-                    onSetAlarm
+                    isNextShow = item.id == items[index].let { it as? Show }?.id
                 )
             }
         }
@@ -111,7 +112,7 @@ fun ShowList(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ShowItem(show: Show, isNextShow: Boolean = false, onSetAlarm: (Show) -> Unit = {}) {
+fun ShowItem(show: Show, isNextShow: Boolean = false) {
     val blinkState = remember { mutableStateOf(false) }
     val color: Color by animateColorAsState(if (blinkState.value) Color.Gray else Color.White)
 
@@ -152,9 +153,7 @@ fun ShowItem(show: Show, isNextShow: Boolean = false, onSetAlarm: (Show) -> Unit
                     Text("${show.startTime} to ${show.endTime}")
                 }
             }
-            Button(onClick = { onSetAlarm(show) }, modifier = Modifier.padding(8.dp)) {
-                Icon(imageVector = Icons.Default.Notifications, contentDescription = "Add alarm")
-            }
+            AlarmButton(time = show.timeAlarm)
         }
     }
 }
