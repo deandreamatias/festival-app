@@ -5,20 +5,21 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.provider.Settings
 import android.util.Log
-import androidx.annotation.RequiresApi
 import festival.deandreamatias.com.MainActivity
 import festival.deandreamatias.com.domain.AlarmService
+import festival.deandreamatias.com.domain.ScreenNavigator
 import festival.deandreamatias.com.entity.MyTime
 import java.util.Calendar
 
-class AlarmServiceAndroid(private val context: Context) : AlarmService {
-    private lateinit var alarmManager: AlarmManager
+class AlarmServiceAndroid(
+    private val context: Context,
+    private val screenNavigator: ScreenNavigator,
+) : AlarmService {
+    private var alarmManager: AlarmManager =
+        context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
     override fun setAlarm(time: MyTime) {
-        alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
         val intent = Intent(context, MainActivity::class.java)
         intent.putExtra("alarmId", time.id)
         Log.i("AlarmServiceAndroid", "setAlarm:id: ${time.id} ")
@@ -35,24 +36,19 @@ class AlarmServiceAndroid(private val context: Context) : AlarmService {
             set(Calendar.SECOND, 0)
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            verifyPermissions()
-
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
-    private fun verifyPermissions(): Boolean {
-        if (alarmManager.canScheduleExactAlarms()) {
-            Log.i("AlarmServiceAndroid", "Can schedule exact alarms")
-            return true
-        } else {
-            Log.i("AlarmServiceAndroid", "Cannot schedule exact alarms. Requesting permission...")
-            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
-            context.startActivity(intent)
-            return alarmManager.canScheduleExactAlarms()
-        }
+    override fun hasExactAlarmPermission(): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) alarmManager.canScheduleExactAlarms() else true
+
+    override fun openExactAlarmPermissionScreen() {
+        screenNavigator.openExactAlarmPermissionScreen()
+    }
+
+    override fun openAppSettings() {
+        screenNavigator.openAppSettings()
     }
 }
