@@ -2,6 +2,7 @@ package festival.deandreamatias.com.ui.alarm
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -10,17 +11,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import festival.deandreamatias.com.entity.MyTime
+import festival.deandreamatias.com.entity.Show
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun AlarmButton(time: MyTime, viewModel: AlarmViewModel = koinViewModel(key = time.id.toString())) {
+fun AlarmButton(
+    show: Show,
+    onShowSnackBar: (Show) -> Unit = {},
+    viewModel: AlarmViewModel = koinViewModel(key = show.id)
+) {
     Button(onClick = {
-        viewModel.verifyPermission(time)
+        val result = viewModel.verifyPermission(show.timeAlarm)
+        if (result) onShowSnackBar(show)
     }, modifier = Modifier.padding(8.dp)) {
-        Icon(imageVector = Icons.Default.Notifications, contentDescription = "Add alarm")
+        Icon(
+            imageVector = if (viewModel.state.value.alarmSet) Icons.Filled.Close else Icons.Filled.Notifications,
+            contentDescription = "Add alarm"
+        )
     }
     PermissionDialog(viewModel)
 }

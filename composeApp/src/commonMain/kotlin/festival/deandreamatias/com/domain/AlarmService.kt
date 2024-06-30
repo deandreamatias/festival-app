@@ -3,7 +3,7 @@ package festival.deandreamatias.com.domain
 import festival.deandreamatias.com.entity.MyTime
 
 interface AlarmService {
-    fun setAlarm(time: MyTime)
+    fun setAlarm(time: MyTime): Boolean
 
     /**
      * Verifies if the permission [android.Manifest.permission.SCHEDULE_EXACT_ALARM] is granted.

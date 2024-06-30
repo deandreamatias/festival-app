@@ -19,7 +19,7 @@ class AlarmServiceAndroid(
     private var alarmManager: AlarmManager =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    override fun setAlarm(time: MyTime) {
+    override fun setAlarm(time: MyTime): Boolean {
         val intent = Intent(context, MainActivity::class.java)
         intent.putExtra("alarmId", time.id)
         Log.i("AlarmServiceAndroid", "setAlarm:id: ${time.id} ")
@@ -36,9 +36,15 @@ class AlarmServiceAndroid(
             set(Calendar.SECOND, 0)
         }
 
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
-        )
+        try {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
+            )
+            return true
+        } catch (e: Exception) {
+            Log.e("AlarmServiceAndroid", "setAlarm: ${e.message}")
+            return false
+        }
     }
 
     override fun hasExactAlarmPermission(): Boolean =

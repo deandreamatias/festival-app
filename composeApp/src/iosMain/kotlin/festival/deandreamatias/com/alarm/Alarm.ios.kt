@@ -4,7 +4,7 @@ import festival.deandreamatias.com.domain.AlarmService
 import festival.deandreamatias.com.entity.MyTime
 
 class AlarmServiceIos : AlarmService {
-    override fun setAlarm(time: MyTime) {
+    override fun setAlarm(time: MyTime): Boolean {
         TODO("Not yet implemented")
     }
 

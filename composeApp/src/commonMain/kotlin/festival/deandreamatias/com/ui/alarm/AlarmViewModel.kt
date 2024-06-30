@@ -12,18 +12,19 @@ class AlarmViewModel(private val alarmService: AlarmService) : ViewModel() {
     private val _state = mutableStateOf(AlarmState())
     val state: State<AlarmState> = _state
 
-    fun verifyPermission(time: MyTime) {
-        viewModelScope.launch {
-            if (alarmService.hasExactAlarmPermission()) {
-                addAlarm(time)
-                return@launch
-            }
-            showDialogPermission()
-        }
+    fun verifyPermission(time: MyTime): Boolean {
+        if (alarmService.hasExactAlarmPermission()) return addAlarm(time)
+        showDialogPermission()
+        return false
     }
 
-    private fun addAlarm(time: MyTime) {
-        if (alarmService.hasExactAlarmPermission()) alarmService.setAlarm(time)
+    private fun addAlarm(time: MyTime): Boolean {
+        if (alarmService.hasExactAlarmPermission()) {
+            val result = alarmService.setAlarm(time)
+            _state.value = _state.value.copy(alarmSet = result)
+            return result
+        }
+        return false
     }
 
     private fun showDialogPermission() {
@@ -44,4 +45,5 @@ class AlarmViewModel(private val alarmService: AlarmService) : ViewModel() {
 
 data class AlarmState(
     val shouldShowDialog: Boolean = false,
+    val alarmSet: Boolean = false,
 )
