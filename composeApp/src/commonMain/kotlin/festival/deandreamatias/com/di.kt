@@ -2,8 +2,8 @@ package festival.deandreamatias.com
 
 import festival.deandreamatias.com.cache.AssetsDatabase
 import festival.deandreamatias.com.network.MockApi
-import festival.deandreamatias.com.ui.ShowsViewModel
 import festival.deandreamatias.com.ui.alarm.AlarmViewModel
+import festival.deandreamatias.com.ui.show.ShowsViewModel
 import org.koin.compose.viewmodel.dsl.viewModelOf
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
