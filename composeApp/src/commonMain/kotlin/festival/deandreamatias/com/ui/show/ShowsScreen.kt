@@ -57,6 +57,7 @@ fun ShowsScreen(
 
     val onShowSnackbar: (Show) -> Unit = { show ->
         viewModel.viewModelScope.launch {
+            viewModel.replaceShow(show)
             snackbarHostState.showSnackbar(
                 message = "Set alarm for ${show.name}",
                 duration = SnackbarDuration.Short,

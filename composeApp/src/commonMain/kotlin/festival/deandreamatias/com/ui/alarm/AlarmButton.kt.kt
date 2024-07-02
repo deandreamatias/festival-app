@@ -27,7 +27,7 @@ fun AlarmButton(
         if (result) onShowSnackBar(show)
     }, modifier = Modifier.padding(8.dp)) {
         Icon(
-            imageVector = if (viewModel.state.value.alarmSet) Icons.Filled.Close else Icons.Filled.Notifications,
+            imageVector = if (viewModel.state.value.alarmSet || show.enabledAlarm) Icons.Filled.Close else Icons.Filled.Notifications,
             contentDescription = "Add alarm"
         )
     }
@@ -38,21 +38,17 @@ fun AlarmButton(
 @Composable
 fun PermissionDialog(viewModel: AlarmViewModel) {
     if (viewModel.state.value.shouldShowDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                viewModel.closeDialogPermission()
-            },
+        AlertDialog(onDismissRequest = {
+            viewModel.closeDialogPermission()
+        },
             title = { Text(text = "Alarm permission") },
             text = { Text(text = "Please enable permission to can create exact alarm. After that, try to add a alarm again") },
             confirmButton = {
-                Button(
-                    onClick = {
-                        viewModel.openAlarmPermissionSettings()
-                    }
-                ) {
+                Button(onClick = {
+                    viewModel.openAlarmPermissionSettings()
+                }) {
                     Text(text = "Open permission settings")
                 }
-            }
-        )
+            })
     }
 }

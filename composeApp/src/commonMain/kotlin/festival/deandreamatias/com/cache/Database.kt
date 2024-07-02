@@ -22,9 +22,20 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         startTime: String,
         duration: String,
         genre: String,
-        stage: String
+        stage: String,
+        enabledAlarm: Boolean?
     ): Show {
-        return Show(id, name, startDate, startTime, duration, genre, stage)
+        return Show(id, name, startDate, startTime, duration, genre, stage, enabledAlarm ?: false)
+    }
+
+    internal fun updateShowAlarm(show: Show) {
+        println("Updating alarm status for show ${show.id} on database")
+        dbQuery.transaction {
+            dbQuery.updateShowAlarm(
+                enabledAlarm = show.enabledAlarm,
+                id = show.id
+            )
+        }
     }
 
     internal fun clearAndCreateShows(shows: List<Show>) {
@@ -40,6 +51,7 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
                     duration = show.duration,
                     genre = show.genre,
                     stage = show.stage,
+                    enabledAlarm = show.enabledAlarm
                 )
             }
         }

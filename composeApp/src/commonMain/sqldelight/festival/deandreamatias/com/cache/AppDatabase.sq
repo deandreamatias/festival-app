@@ -1,3 +1,5 @@
+import kotlin.Boolean;
+
 CREATE TABLE Show (
     id TEXT NOT NULL,
     name TEXT NOT NULL,
@@ -5,12 +7,16 @@ CREATE TABLE Show (
     startTime TEXT NOT NULL,
     duration TEXT NOT NULL,
     genre TEXT NOT NULL,
-    stage TEXT NOT NULL
+    stage TEXT NOT NULL,
+    enabledAlarm INTEGER AS Boolean DEFAULT NULL
 );
 
 insertShow:
-INSERT INTO Show(id, name, startDate, startTime, duration, genre, stage)
-VALUES(?, ?, ?, ?, ?, ?, ?);
+INSERT INTO Show(id, name, startDate, startTime, duration, genre, stage, enabledAlarm)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?);
+
+updateShowAlarm:
+UPDATE Show SET enabledAlarm = ? WHERE id = ?;
 
 removeAllShows:
 DELETE FROM Show;

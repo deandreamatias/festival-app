@@ -24,6 +24,8 @@ data class Show(
     val genre: String = "",
     @SerialName("stage")
     val stage: String,
+    @SerialName("enabledAlarm")
+    val enabledAlarm: Boolean = false,
 ) {
     val startDateTime: LocalDateTime
         get() = LocalDateTime(localDate, localTime)
