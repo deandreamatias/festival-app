@@ -5,6 +5,6 @@ import app.cash.sqldelight.driver.native.NativeSqliteDriver
 
 class IOSDatabaseDriverFactory : DatabaseDriverFactory {
     override fun createDriver(): SqlDriver {
-        return NativeSqliteDriver(AppDatabase.Schema, "show.db")
+        return NativeSqliteDriver(AppDatabase.Schema, DB_NAME)
     }
 }
