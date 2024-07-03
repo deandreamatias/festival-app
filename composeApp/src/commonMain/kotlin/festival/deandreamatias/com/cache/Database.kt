@@ -43,17 +43,25 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         dbQuery.transaction {
             dbQuery.removeAllShows()
             shows.forEach { show ->
-                dbQuery.insertShow(
-                    id = show.id,
-                    name = show.name,
-                    startDate = show.startDate,
-                    startTime = show.startTime,
-                    duration = show.duration,
-                    genre = show.genre,
-                    stage = show.stage,
-                    enabledAlarm = show.enabledAlarm
-                )
+                insertShow(show)
             }
         }
+    }
+
+    private fun insertShow(show: Show, transaction: Boolean = false) {
+        fun function() =
+            dbQuery.insertShow(
+                id = show.id,
+                name = show.name,
+                startDate = show.startDate,
+                startTime = show.startTime,
+                duration = show.duration,
+                genre = show.genre,
+                stage = show.stage,
+                enabledAlarm = show.enabledAlarm
+            )
+        if (transaction) dbQuery.transaction {
+            function()
+        } else function()
     }
 }

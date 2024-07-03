@@ -35,11 +35,12 @@ Also, is for explore Kotlin Multiplatform with Compose Multiplatform.
 - Get list from remote and cached on local database
 - Set alarm for a show
     - Handled permissions
+  - Save on local database
+  - Show alarm icon on show list
 
 TODO:
 
-- Save what show had alarm set
-- Update alarm icon on shows that had alarm set
+- Show notification when alarm is triggered
 - Add a home card to promote @afterjune track
 - Replace top app bar for bottom bar
 - Add info screen

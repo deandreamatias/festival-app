@@ -30,6 +30,10 @@ class ShowsViewModel(private val sdk: MockSDK) : ViewModel() {
             }
         }
     }
+
+    fun replaceShow(show: Show) {
+        sdk.updateShowAlarm(show.copy(enabledAlarm = !show.enabledAlarm))
+    }
 }
 
 sealed class ShowsUiState {
